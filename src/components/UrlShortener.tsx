@@ -130,93 +130,89 @@ const UrlShortener = () => {
   };
 
   return (
-    <div className="w-full max-w-2xl mx-auto space-y-8">
+    <div className="w-full max-w-2xl mx-auto space-y-12">
       {/* Main Input Section */}
-      <Card className="p-6 sm:p-8 bg-card border-border shadow-md">
+      <div className="space-y-8">
+        <div className="text-center space-y-4">
+          <h2 className="text-4xl sm:text-5xl font-bold text-foreground">
+            {t.title}
+          </h2>
+          <p className="text-xl text-muted-foreground max-w-lg mx-auto">
+            {t.subtitle}
+          </p>
+        </div>
+        
         <div className="space-y-6">
-          <div className="text-center space-y-3">
-            <h2 className="text-3xl sm:text-4xl font-bold text-foreground">
-              {t.title}
-            </h2>
-            <p className="text-lg text-muted-foreground">
-              {t.subtitle}
-            </p>
+          <div className="relative">
+            <Input
+              type="url"
+              placeholder={t.placeholder}
+              value={originalUrl}
+              onChange={(e) => setOriginalUrl(e.target.value)}
+              onKeyPress={handleKeyPress}
+              className="pl-12 h-16 text-lg border-2 border-border bg-background focus:border-primary focus:ring-0 transition-colors"
+            />
+            <Link2 className="absolute left-4 top-1/2 transform -translate-y-1/2 text-muted-foreground" size={20} />
           </div>
           
-          <div className="space-y-4">
-            <div className="relative">
-              <Input
-                type="url"
-                placeholder={t.placeholder}
-                value={originalUrl}
-                onChange={(e) => setOriginalUrl(e.target.value)}
-                onKeyPress={handleKeyPress}
-                className="pl-12 h-14 text-lg border-input-border bg-input focus:ring-2 focus:ring-ring"
-              />
-              <Link2 className="absolute left-4 top-1/2 transform -translate-y-1/2 text-muted-foreground" size={20} />
-            </div>
-            
-            <Input
-              type="text"
-              placeholder={t.custom_placeholder}
-              value={customName}
-              onChange={(e) => setCustomName(e.target.value)}
-              onKeyPress={handleKeyPress}
-              className="h-12 border-input-border bg-input focus:ring-2 focus:ring-ring"
-            />
-            
-            <Button 
-              onClick={handleShorten}
-              disabled={isLoading || !originalUrl.trim()}
-              className="w-full h-14 text-lg font-semibold bg-primary hover:bg-primary-hover text-primary-foreground shadow-nani transition-normal"
-            >
-              {isLoading ? 'Encurtando...' : t.button_shorten}
-            </Button>
-          </div>
+          <Input
+            type="text"
+            placeholder={t.custom_placeholder}
+            value={customName}
+            onChange={(e) => setCustomName(e.target.value)}
+            onKeyPress={handleKeyPress}
+            className="h-14 border-2 border-border bg-background focus:border-primary focus:ring-0 transition-colors"
+          />
+          
+          <Button 
+            onClick={handleShorten}
+            disabled={isLoading || !originalUrl.trim()}
+            className="w-full h-16 text-lg font-semibold bg-primary hover:bg-primary-hover text-primary-foreground shadow-nani transition-all hover:shadow-lg hover:scale-[1.02]"
+          >
+            {isLoading ? 'Encurtando...' : t.button_shorten}
+          </Button>
         </div>
-      </Card>
+      </div>
 
       {/* Result Section */}
       {result && (
-        <Card className="p-6 sm:p-8 bg-card border-border shadow-md animate-in slide-in-from-bottom-4 duration-500">
+        <div className="space-y-6 animate-in slide-in-from-bottom-4 duration-500">
+          <div className="text-center">
+            <h3 className="text-2xl font-semibold text-foreground mb-2">
+              ✨ Link encurtado com sucesso!
+            </h3>
+          </div>
+          
           <div className="space-y-6">
-            <div className="text-center">
-              <h3 className="text-xl font-semibold text-foreground mb-4">
-                ✨ Link encurtado com sucesso!
-              </h3>
+            <div className="space-y-3">
+              <label className="text-sm font-medium text-muted-foreground uppercase tracking-wide">
+                {t.result_original}
+              </label>
+              <div className="p-4 bg-muted/50 rounded-xl text-sm text-muted-foreground break-all border border-border">
+                {result.originalUrl}
+              </div>
             </div>
             
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-muted-foreground">
-                  {t.result_original}
-                </label>
-                <div className="p-3 bg-muted rounded-lg text-sm text-muted-foreground break-all">
-                  {result.originalUrl}
+            <div className="space-y-3">
+              <label className="text-sm font-medium text-muted-foreground uppercase tracking-wide">
+                {t.result_shortened}
+              </label>
+              <div className="flex gap-3">
+                <div className="flex-1 p-4 bg-primary/5 border-2 border-primary/20 rounded-xl text-foreground font-medium break-all">
+                  {result.shortUrl}
                 </div>
-              </div>
-              
-              <div className="space-y-2">
-                <label className="text-sm font-medium text-muted-foreground">
-                  {t.result_shortened}
-                </label>
-                <div className="flex gap-2">
-                  <div className="flex-1 p-3 bg-accent rounded-lg text-foreground font-medium break-all">
-                    {result.shortUrl}
-                  </div>
-                  <Button
-                    onClick={handleCopy}
-                    variant="outline"
-                    size="sm"
-                    className="px-4 transition-fast"
-                  >
-                    {copied ? <Check size={16} /> : <Copy size={16} />}
-                  </Button>
-                </div>
+                <Button
+                  onClick={handleCopy}
+                  variant="outline"
+                  size="sm"
+                  className="px-6 h-auto py-4 border-2 hover:bg-primary hover:text-primary-foreground transition-all"
+                >
+                  {copied ? <Check size={18} /> : <Copy size={18} />}
+                </Button>
               </div>
             </div>
           </div>
-        </Card>
+        </div>
       )}
     </div>
   );
