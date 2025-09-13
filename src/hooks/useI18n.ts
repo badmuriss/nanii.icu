@@ -1,24 +1,10 @@
-import { useState, useEffect } from 'react';
-import { Language, translations, getStoredLanguage, setStoredLanguage } from '@/lib/i18n';
+import { useContext } from 'react';
+import { I18nContext } from '@/contexts/I18nProvider';
 
 export const useI18n = () => {
-  const [language, setLanguage] = useState<Language>('pt');
-
-  useEffect(() => {
-    const storedLang = getStoredLanguage();
-    setLanguage(storedLang);
-  }, []);
-
-  const changeLanguage = (newLanguage: Language) => {
-    setLanguage(newLanguage);
-    setStoredLanguage(newLanguage);
-  };
-
-  const t = translations[language];
-
-  return {
-    language,
-    changeLanguage,
-    t
-  };
+  const ctx = useContext(I18nContext);
+  if (!ctx) {
+    throw new Error('useI18n must be used within I18nProvider');
+  }
+  return ctx;
 };

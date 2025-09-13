@@ -88,7 +88,7 @@ export default {
         "bounce-smooth": "cubic-bezier(0.4, 0, 0.2, 1)",
       },
       fontFamily: {
-        sans: ["Poppins", "system-ui", "sans-serif"],
+        sans: ["Manrope", "system-ui", "sans-serif"],
       },
       keyframes: {
         "accordion-down": {
