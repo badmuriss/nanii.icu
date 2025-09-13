@@ -19,7 +19,7 @@ export interface Translations {
 
 export const translations: Record<Language, Translations> = {
   pt: {
-    title: "Encurte seus links. Deixe tudo mais 'nanico'.",
+    title: "Seu encurtador de URLs",
     subtitle: "Transforme URLs longas em links pequenos e amigáveis com o Nani.icu",
     placeholder: "Cole seu link longo aqui...",
     custom_placeholder: "Seu nome 'nanico' (opcional)",
@@ -31,11 +31,11 @@ export const translations: Record<Language, Translations> = {
     error_generic: "Algo deu errado. Tente novamente!",
     result_original: "Link original:",
     result_shortened: "Link nanico:",
-    footer_text: "Feito com ❤️ para deixar a web mais nanica",
+    footer_text: "© 2024 Nani.icu. Todos os direitos reservados.",
     language_selector: "Selecionar idioma"
   },
   en: {
-    title: "Shorten your links. Make everything 'nani'.",
+    title: "Your URL shortener",
     subtitle: "Transform long URLs into small and friendly links with Nani.icu",
     placeholder: "Paste your long link here...",
     custom_placeholder: "Your 'nani' name (optional)",
@@ -47,11 +47,11 @@ export const translations: Record<Language, Translations> = {
     error_generic: "Something went wrong. Please try again!",
     result_original: "Original link:",
     result_shortened: "Nani link:",
-    footer_text: "Made with ❤️ to make the web more nani",
+    footer_text: "© 2024 Nani.icu. All rights reserved.",
     language_selector: "Select language"
   },
   es: {
-    title: "Acorta tus enlaces. Haz todo más 'nanico'.",
+    title: "Tu acortador de URLs",
     subtitle: "Transforma URLs largas en enlaces pequeños y amigables con Nani.icu",
     placeholder: "Pega tu enlace largo aquí...",
     custom_placeholder: "Tu nombre 'nanico' (opcional)",
@@ -63,7 +63,7 @@ export const translations: Record<Language, Translations> = {
     error_generic: "Algo salió mal. ¡Inténtalo de nuevo!",
     result_original: "Enlace original:",
     result_shortened: "Enlace nanico:",
-    footer_text: "Hecho con ❤️ para hacer la web más nanica",
+    footer_text: "© 2024 Nani.icu. Todos los derechos reservados.",
     language_selector: "Seleccionar idioma"
   }
 };

@@ -1,6 +1,5 @@
 import naniLogo from '@/assets/nani-logo.png';
 import LanguageSelector from './LanguageSelector';
-import ThemeToggle from './ThemeToggle';
 
 const Header = () => {
   return (
@@ -19,7 +18,6 @@ const Header = () => {
         
         <div className="flex items-center gap-2">
           <LanguageSelector />
-          <ThemeToggle />
         </div>
       </div>
     </header>
