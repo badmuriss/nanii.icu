@@ -1,22 +1,43 @@
 import { useLocation } from "react-router-dom";
 import { useEffect } from "react";
+import { useI18n } from "@/hooks/useI18n";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import { Button } from "@/components/ui/button";
 
 const NotFound = () => {
   const location = useLocation();
+  const { t } = useI18n();
 
   useEffect(() => {
     console.error("404 Error: User attempted to access non-existent route:", location.pathname);
   }, [location.pathname]);
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-gray-100">
-      <div className="text-center">
-        <h1 className="mb-4 text-4xl font-bold">404</h1>
-        <p className="mb-4 text-xl text-gray-600">Oops! Page not found</p>
-        <a href="/" className="text-blue-500 underline hover:text-blue-700">
-          Return to Home
-        </a>
-      </div>
+    <div className="min-h-screen bg-gradient-subtle flex flex-col">
+      <Header />
+      
+      <main className="flex-1 flex items-center justify-center px-4 sm:px-6 lg:px-8">
+        <div className="text-center space-y-6 max-w-md mx-auto">
+          <div className="text-8xl font-bold text-gradient-nani mb-4">
+            404
+          </div>
+          <h1 className="text-2xl font-bold text-foreground">
+            Oops! Link não encontrado
+          </h1>
+          <p className="text-muted-foreground">
+            Este link 'nanico' não existe ou foi removido.
+          </p>
+          <Button 
+            onClick={() => window.location.href = '/'}
+            className="bg-primary hover:bg-primary-hover text-primary-foreground shadow-nani"
+          >
+            Voltar ao início
+          </Button>
+        </div>
+      </main>
+      
+      <Footer />
     </div>
   );
 };
