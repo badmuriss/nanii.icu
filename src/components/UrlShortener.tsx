@@ -21,6 +21,26 @@ const UrlShortener = () => {
   const [result, setResult] = useState<ShortenedUrl | null>(null);
   const [copied, setCopied] = useState(false);
 
+  const formatUrl = (url: string): string => {
+    if (!url.trim()) return url;
+    
+    // If already has protocol, keep it
+    if (url.startsWith('http://') || url.startsWith('https://')) {
+      return url;
+    }
+    
+    // Add https:// by default
+    return `https://${url}`;
+  };
+
+  const handleUrlChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    
+    // If user is typing and there's no protocol, show the raw input
+    // The formatting will happen on validation/submission
+    setOriginalUrl(value);
+  };
+
   const validateUrl = (url: string): boolean => {
     try {
       new URL(url);
@@ -33,7 +53,9 @@ const UrlShortener = () => {
   const handleShorten = async () => {
     if (!originalUrl.trim()) return;
     
-    if (!validateUrl(originalUrl)) {
+    const formattedUrl = formatUrl(originalUrl.trim());
+    
+    if (!validateUrl(formattedUrl)) {
       toast({
         variant: "destructive",
         title: t.error_invalid_url,
@@ -50,7 +72,7 @@ const UrlShortener = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          originalUrl: originalUrl.trim(),
+          originalUrl: formattedUrl,
           customName: customName.trim() || undefined,
         }),
       });
@@ -58,7 +80,7 @@ const UrlShortener = () => {
       if (response.ok) {
         const data = await response.json();
         setResult({
-          originalUrl,
+          originalUrl: formattedUrl,
           shortUrl: `${window.location.origin}/${data.shortName}`,
           customName: customName.trim() || undefined,
         });
@@ -144,14 +166,21 @@ const UrlShortener = () => {
         
         <div className="space-y-6">
           <div className="relative">
-            <Input
-              type="url"
-              placeholder={t.placeholder}
-              value={originalUrl}
-              onChange={(e) => setOriginalUrl(e.target.value)}
-              onKeyPress={handleKeyPress}
-              className="pl-12 h-16 text-lg border-2 border-border bg-background focus:border-primary focus:ring-0 transition-colors"
-            />
+            <div className="relative">
+              <span className="absolute left-12 top-1/2 transform -translate-y-1/2 text-muted-foreground text-lg pointer-events-none z-10">
+                {!originalUrl.startsWith('http://') && !originalUrl.startsWith('https://') && !originalUrl ? 'https://' : ''}
+              </span>
+              <Input
+                type="text"
+                placeholder={originalUrl.startsWith('http://') || originalUrl.startsWith('https://') || !originalUrl ? t.placeholder : `${t.placeholder.replace('https://', '')}`}
+                value={originalUrl}
+                onChange={handleUrlChange}
+                onKeyPress={handleKeyPress}
+                className={`h-16 text-lg border-2 border-border bg-background focus:border-primary focus:ring-0 transition-colors ${
+                  !originalUrl.startsWith('http://') && !originalUrl.startsWith('https://') && originalUrl ? 'pl-24' : 'pl-12'
+                }`}
+              />
+            </div>
             <Link2 className="absolute left-4 top-1/2 transform -translate-y-1/2 text-muted-foreground" size={20} />
           </div>
           
