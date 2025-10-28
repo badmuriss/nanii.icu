@@ -24,10 +24,10 @@ services:
       dockerfile: Dockerfile
     container_name: naniiicu-backend
     ports:
-      - "3001:3001"
+      - "3003:3003"
     environment:
       NODE_ENV: ${NODE_ENV:-production}
-      PORT: ${PORT:-3001}
+      PORT: ${PORT:-3003}
       CORS_ORIGIN: ${CORS_ORIGIN:-http://localhost:8080,http://localhost:8082}
       LOG_LEVEL: ${LOG_LEVEL:-info}
       # MongoDB connection (individual variables - dynamically built)
