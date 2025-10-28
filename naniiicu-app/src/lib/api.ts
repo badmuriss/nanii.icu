@@ -1,5 +1,5 @@
 // API configuration and utilities
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3001';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3003';
 
 interface ApiResponse<T> {
   success: boolean;
