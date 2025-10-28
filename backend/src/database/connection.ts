@@ -1,5 +1,6 @@
 import mongoose from 'mongoose';
 import { config } from '../config/environment.js';
+import { logger } from '../config/logger.js';
 
 export const connectDatabase = async (): Promise<void> => {
   try {
@@ -8,9 +9,9 @@ export const connectDatabase = async (): Promise<void> => {
       serverSelectionTimeoutMS: 5000,
     });
 
-    console.log('Database connected successfully');
+    logger.info({ mongoUri: config.mongoUri.replace(/:[^:@]+@/, ':****@') }, 'Database connected successfully');
   } catch (error) {
-    console.error('Database connection failed:', error);
+    logger.error({ error }, 'Database connection failed');
     throw error;
   }
 };

@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
+import { logger } from '../config/logger.js';
 
 export const errorHandler = (
   error: Error,
@@ -6,8 +7,16 @@ export const errorHandler = (
   res: Response,
   next: NextFunction
 ) => {
-  console.error('Error:', error.message);
-  console.error('Stack:', error.stack);
+  logger.error({
+    error: {
+      message: error.message,
+      stack: error.stack,
+      name: error.name,
+    },
+    method: req.method,
+    path: req.path,
+    ip: req.ip,
+  }, 'Request error');
 
   if (res.headersSent) {
     return next(error);

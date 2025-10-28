@@ -3,6 +3,7 @@ import cors from 'cors';
 import helmet from 'helmet';
 import rateLimit from 'express-rate-limit';
 import { config } from './config/environment.js';
+import { logger } from './config/logger.js';
 import { urlRouter } from './routes/urls.js';
 import { hubRouter } from './routes/hubs.js';
 import { redirectRouter } from './routes/redirect.js';
@@ -21,15 +22,14 @@ const allowedOrigins = config.corsOrigin;
 
 app.use(cors({
   origin: function (origin, callback) {
-    console.log('CORS Debug - Request origin:', origin);
-    console.log('CORS Debug - Allowed origins:', allowedOrigins);
+    logger.debug({ origin, allowedOrigins }, 'CORS request received');
 
     if (!origin) return callback(null, true);
     if (allowedOrigins.indexOf(origin) !== -1) {
-      console.log('CORS Debug - Origin allowed:', origin);
+      logger.debug({ origin }, 'CORS origin allowed');
       return callback(null, true);
     } else {
-      console.log('CORS Debug - Origin NOT allowed:', origin);
+      logger.warn({ origin, allowedOrigins }, 'CORS origin blocked');
       return callback(new Error('Not allowed by CORS'));
     }
   },
@@ -60,21 +60,20 @@ app.use(errorHandler);
 
 const startServer = async () => {
   try {
-    console.log('Starting nanii.icu backend server...');
-    console.log('Configuration:');
-    console.log(`   Port: ${config.port}`);
-    console.log(`   Environment: ${config.nodeEnv}`);
-    console.log(`   Base URL: ${config.baseUrl}`);
-    console.log(`   Allowed Origins: ${JSON.stringify(allowedOrigins)}`);
+    logger.info('Starting nanii.icu backend server...');
+    logger.info({
+      port: config.port,
+      environment: config.nodeEnv,
+      allowedOrigins,
+    }, 'Server configuration');
 
     await connectDatabase();
 
     app.listen(config.port, () => {
-      console.log('NANII.ICU BACKEND RUNNING');
-      console.log(`Server listening on port ${config.port}`);
+      logger.info({ port: config.port }, 'NANII.ICU BACKEND RUNNING');
     });
   } catch (error) {
-    console.error('Failed to start server:', error);
+    logger.error({ error }, 'Failed to start server');
     process.exit(1);
   }
 };

@@ -10,6 +10,7 @@ import { urlApi, hubApi } from '@/lib/api';
 import { useAvailability } from '@/hooks/useAvailability';
 import { CustomNameInput } from '@/components/CustomNameInput';
 import { handleApiError } from '@/lib/errorHandler';
+import { QRCodeDisplay } from '@/components/QRCodeDisplay';
 
 interface ShortenedUrl {
   originalUrl: string;
@@ -210,7 +211,7 @@ const UrlShortener = () => {
         description: data.description,
         links: data.links,
         customName: data.customName,
-        hubUrl: `${window.location.origin}/${data.hubName}`,
+        hubUrl: `${window.location.origin}/h/${data.hubName}`,
       } as CreatedHub);
 
       // Clear inputs after success
@@ -358,7 +359,7 @@ const UrlShortener = () => {
           {/* Links Section */}
           <div className="space-y-4">
             <div className="flex justify-between items-center">
-              <h3 className="text-2xl font-highlight">{t.hub_links_section}</h3>
+              <h3 className="text-2xl font-semibold">{t.hub_links_section}</h3>
               <Button
                 onClick={addHubLink}
                 disabled={hubLinks.length >= 10}
@@ -424,7 +425,7 @@ const UrlShortener = () => {
       {result && (
         <div className="max-w-2xl mx-auto space-y-6 animate-in slide-in-from-bottom-4 duration-500">
           <div className="text-center">
-            <h3 className="text-3xl font-highlight text-foreground mb-2">
+            <h3 className="text-2xl font-semibold text-foreground mb-2">
               ✨ {'shortUrl' in result ? t.url_success_title : t.hub_success_title}
             </h3>
           </div>
@@ -460,6 +461,11 @@ const UrlShortener = () => {
                     </Button>
                   </div>
                 </div>
+
+                <QRCodeDisplay
+                  value={result.shortUrl}
+                  filename={result.customName || 'short-url'}
+                />
               </>
             ) : (
               // Hub Result
@@ -497,6 +503,11 @@ const UrlShortener = () => {
                     </Button>
                   </div>
                 </div>
+
+                <QRCodeDisplay
+                  value={result.hubUrl}
+                  filename={result.customName || result.hubName || 'hub'}
+                />
               </>
             )}
           </div>

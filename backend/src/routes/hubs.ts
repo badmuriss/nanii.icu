@@ -1,6 +1,7 @@
 import { Router, Request, Response } from 'express';
 import { z } from 'zod';
 import { HubQueries } from '../database/queries.js';
+import { logger } from '../config/logger.js';
 
 const router = Router();
 const hubQueries = HubQueries.getInstance();
@@ -75,7 +76,7 @@ router.post('/', async (req: Request, res: Response) => {
     });
 
   } catch (error) {
-    console.error('Error creating Hub:', error);
+    logger.error({ error, title: req.body.title, customName: req.body.customName }, 'Error creating Hub');
 
     if (error instanceof Error) {
       if (error.message.includes('already taken') || error.message.includes('reserved')) {
@@ -118,7 +119,7 @@ router.post('/check-availability', async (req: Request, res: Response) => {
     });
 
   } catch (error) {
-    console.error('Error checking hub availability:', error);
+    logger.error({ error, customName: req.body.customName }, 'Error checking hub availability');
     res.status(500).json({
       success: false,
       error: 'Failed to check availability'
@@ -154,7 +155,7 @@ router.get('/:hubName', async (req: Request, res: Response) => {
     });
 
   } catch (error) {
-    console.error('Error fetching hub:', error);
+    logger.error({ error, hubName: req.params.hubName }, 'Error fetching hub');
     res.status(500).json({
       success: false,
       error: 'Failed to fetch hub'
@@ -189,7 +190,7 @@ router.get('/:hubName/stats', async (req: Request, res: Response) => {
     });
 
   } catch (error) {
-    console.error('Error fetching hub stats:', error);
+    logger.error({ error, hubName: req.params.hubName }, 'Error fetching hub stats');
     res.status(500).json({
       success: false,
       error: 'Failed to fetch hub stats'
@@ -220,7 +221,7 @@ router.get('/', async (req: Request, res: Response) => {
     });
 
   } catch (error) {
-    console.error('Error fetching hubs:', error);
+    logger.error({ error }, 'Error fetching hubs');
     res.status(500).json({
       success: false,
       error: 'Failed to fetch hubs'

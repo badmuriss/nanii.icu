@@ -9,7 +9,7 @@ const Footer = () => {
     <footer className="w-full py-8 px-4 sm:px-6 lg:px-8 mt-16">
       <div className="max-w-4xl mx-auto flex flex-col items-center gap-4">
         <a
-          href="https://github.com/badmuriss"
+          href="https://github.com/badmuriss/nanii.icu"
           target="_blank"
           rel="noopener noreferrer"
           className="text-muted-foreground hover:text-foreground transition-colors"

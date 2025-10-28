@@ -1,6 +1,7 @@
 import { Router, Request, Response } from 'express';
 import { z } from 'zod';
 import { UrlQueries } from '../database/queries.js';
+import { logger } from '../config/logger.js';
 
 const router = Router();
 const urlQueries = UrlQueries.getInstance();
@@ -62,7 +63,7 @@ router.post('/', async (req: Request, res: Response) => {
     });
 
   } catch (error) {
-    console.error('Error creating URL:', error);
+    logger.error({ error, originalUrl: req.body.originalUrl, customName: req.body.customName }, 'Error creating URL');
 
     if (error instanceof Error) {
       if (error.message.includes('already taken') || error.message.includes('reserved')) {
@@ -104,7 +105,7 @@ router.post('/check-availability', async (req: Request, res: Response) => {
     });
 
   } catch (error) {
-    console.error('Error checking availability:', error);
+    logger.error({ error, customName: req.body.customName }, 'Error checking availability');
     res.status(500).json({
       success: false,
       error: 'Failed to check availability'
@@ -138,7 +139,7 @@ router.get('/:shortName/stats', async (req: Request, res: Response) => {
     });
 
   } catch (error) {
-    console.error('Error fetching stats:', error);
+    logger.error({ error, shortName: req.params.shortName }, 'Error fetching stats');
     res.status(500).json({
       success: false,
       error: 'Failed to fetch stats'
@@ -166,7 +167,7 @@ router.get('/', async (req: Request, res: Response) => {
     });
 
   } catch (error) {
-    console.error('Error fetching URLs:', error);
+    logger.error({ error }, 'Error fetching URLs');
     res.status(500).json({
       success: false,
       error: 'Failed to fetch URLs'

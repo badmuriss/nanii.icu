@@ -1,5 +1,6 @@
 import { Router, Request, Response } from 'express';
 import mongoose from 'mongoose';
+import { logger } from '../config/logger.js';
 
 const router = Router();
 
@@ -18,7 +19,7 @@ router.get('/', async (req: Request, res: Response) => {
       throw new Error('Database not connected');
     }
   } catch (error) {
-    console.error('Health check failed:', error);
+    logger.error({ error, dbState: mongoose.connection.readyState }, 'Health check failed');
     res.status(500).json({
       success: false,
       status: 'unhealthy',

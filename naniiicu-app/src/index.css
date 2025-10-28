@@ -124,10 +124,6 @@
 
 /* Custom Utilities */
 @layer utilities {
-  .font-highlight {
-    font-family: 'Lilita One', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
-  }
-
   .font-title {
     font-family: 'Shrikhand', 'Lilita One', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
   }

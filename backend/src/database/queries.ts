@@ -98,7 +98,7 @@ export class UrlQueries {
 
     if (request.customName) {
       const trimmedCustomName = request.customName.trim();
-      const availability = await this.unified.checkNameAvailability(trimmedCustomName);
+      const availability = await this.checkCustomNameAvailability(trimmedCustomName);
 
       if (!availability.available) {
         throw new Error(availability.reason || 'This custom name is not available');
@@ -137,7 +137,44 @@ export class UrlQueries {
   }
 
   async checkCustomNameAvailability(customName: string): Promise<{ available: boolean; reason?: string }> {
-    return this.unified.checkNameAvailability(customName);
+    // Basic validation
+    if (!customName || customName.trim().length === 0) {
+      return { available: false, reason: 'Name cannot be empty' };
+    }
+
+    const trimmedName = customName.trim();
+
+    if (trimmedName.length < 3) {
+      return { available: false, reason: 'Name must be at least 3 characters long' };
+    }
+
+    if (trimmedName.length > 50) {
+      return { available: false, reason: 'Name must be less than 50 characters' };
+    }
+
+    if (!/^[a-zA-Z0-9_-]+$/.test(trimmedName)) {
+      return { available: false, reason: 'Name can only contain letters, numbers, hyphens, and underscores' };
+    }
+
+    // Check reserved names
+    const reserved = [
+      'api', 'admin', 'www', 'app', 'mail', 'ftp', 'root',
+      'about', 'contact', 'help', 'support', 'terms', 'privacy',
+      'login', 'register', 'signin', 'signup', 'auth', 'oauth',
+      'dashboard', 'home', 'index', 'main', 'blog', 'news', 'hub', 'hubs', 'h'
+    ];
+    if (reserved.includes(trimmedName.toLowerCase())) {
+      return { available: false, reason: 'This name is reserved and cannot be used' };
+    }
+
+    // Check only URLs collection for conflicts
+    const existingUrl = await Url.findOne({ shortName: trimmedName, isActive: true });
+
+    if (existingUrl) {
+      return { available: false, reason: 'This name is already taken' };
+    }
+
+    return { available: true };
   }
 
   async incrementClickCount(urlId: mongoose.Types.ObjectId): Promise<void> {
@@ -210,7 +247,7 @@ export class HubQueries {
 
     if (request.customName) {
       const trimmedCustomName = request.customName.trim();
-      const availability = await this.unified.checkNameAvailability(trimmedCustomName);
+      const availability = await this.checkCustomNameAvailability(trimmedCustomName);
 
       if (!availability.available) {
         throw new Error(availability.reason || 'This custom name is not available');
@@ -251,7 +288,44 @@ export class HubQueries {
   }
 
   async checkCustomNameAvailability(customName: string): Promise<{ available: boolean; reason?: string }> {
-    return this.unified.checkNameAvailability(customName);
+    // Basic validation
+    if (!customName || customName.trim().length === 0) {
+      return { available: false, reason: 'Name cannot be empty' };
+    }
+
+    const trimmedName = customName.trim();
+
+    if (trimmedName.length < 3) {
+      return { available: false, reason: 'Name must be at least 3 characters long' };
+    }
+
+    if (trimmedName.length > 50) {
+      return { available: false, reason: 'Name must be less than 50 characters' };
+    }
+
+    if (!/^[a-zA-Z0-9_-]+$/.test(trimmedName)) {
+      return { available: false, reason: 'Name can only contain letters, numbers, hyphens, and underscores' };
+    }
+
+    // Check reserved names
+    const reserved = [
+      'api', 'admin', 'www', 'app', 'mail', 'ftp', 'root',
+      'about', 'contact', 'help', 'support', 'terms', 'privacy',
+      'login', 'register', 'signin', 'signup', 'auth', 'oauth',
+      'dashboard', 'home', 'index', 'main', 'blog', 'news', 'hub', 'hubs', 'h'
+    ];
+    if (reserved.includes(trimmedName.toLowerCase())) {
+      return { available: false, reason: 'This name is reserved and cannot be used' };
+    }
+
+    // Check only Hubs collection for conflicts
+    const existingHub = await Hub.findOne({ hubName: trimmedName, isActive: true });
+
+    if (existingHub) {
+      return { available: false, reason: 'This name is already taken' };
+    }
+
+    return { available: true };
   }
 
   async incrementClickCount(hubId: mongoose.Types.ObjectId): Promise<void> {

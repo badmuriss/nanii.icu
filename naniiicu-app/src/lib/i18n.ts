@@ -55,6 +55,10 @@ export interface Translations {
 
   // Page titles
   page_title_shortener: string;
+
+  // QR Code
+  qrCode: string;
+  downloadQR: string;
 }
 
 export const translations: Record<Language, Translations> = {
@@ -112,7 +116,11 @@ export const translations: Record<Language, Translations> = {
     links_plural: "links",
 
     // Page titles
-    page_title_shortener: "encurtador de URLs"
+    page_title_shortener: "encurtador de URLs",
+
+    // QR Code
+    qrCode: "Código QR",
+    downloadQR: "Baixar Código QR"
   },
   en: {
     title: "Your URL shortener",
@@ -168,7 +176,11 @@ export const translations: Record<Language, Translations> = {
     links_plural: "links",
 
     // Page titles
-    page_title_shortener: "URL shortener"
+    page_title_shortener: "URL shortener",
+
+    // QR Code
+    qrCode: "QR Code",
+    downloadQR: "Download QR Code"
   },
   es: {
     title: "Tu acortador de URLs",
@@ -224,7 +236,11 @@ export const translations: Record<Language, Translations> = {
     links_plural: "enlaces",
 
     // Page titles
-    page_title_shortener: "acortador de URLs"
+    page_title_shortener: "acortador de URLs",
+
+    // QR Code
+    qrCode: "Código QR",
+    downloadQR: "Descargar Código QR"
   }
 };
 

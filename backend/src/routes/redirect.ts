@@ -1,5 +1,6 @@
 import { Router, Request, Response } from 'express';
 import { UrlQueries, HubQueries } from '../database/queries.js';
+import { logger } from '../config/logger.js';
 
 const router = Router();
 const urlQueries = UrlQueries.getInstance();
@@ -35,7 +36,7 @@ router.get('/:shortName', async (req: Request, res: Response) => {
 
         await urlQueries.incrementClickCount(url._id);
       } catch (clickError) {
-        console.error('Error recording click:', clickError);
+        logger.warn({ error: clickError, urlId: url._id }, 'Error recording click (non-fatal)');
       }
 
       return res.redirect(302, url.originalUrl);
@@ -45,7 +46,7 @@ router.get('/:shortName', async (req: Request, res: Response) => {
     return res.redirect('/404/not-found');
 
   } catch (error) {
-    console.error('Error processing redirect:', error);
+    logger.error({ error, shortName: req.params.shortName }, 'Error processing redirect');
     res.status(500).json({
       success: false,
       error: 'Internal server error'
@@ -78,7 +79,7 @@ router.get('/h/:hubShortName', async (req: Request, res: Response) => {
     try {
       await hubQueries.incrementClickCount(hub._id);
     } catch (clickError) {
-      console.error('Error recording hub click:', clickError);
+      logger.warn({ error: clickError, hubId: hub._id }, 'Error recording hub click (non-fatal)');
     }
 
     // Return hub data for frontend rendering
@@ -98,7 +99,7 @@ router.get('/h/:hubShortName', async (req: Request, res: Response) => {
     });
 
   } catch (error) {
-    console.error('Error processing hub:', error);
+    logger.error({ error, hubShortName: req.params.hubShortName }, 'Error processing hub');
     res.status(500).json({
       success: false,
       error: 'Internal server error'

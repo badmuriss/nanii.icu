@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { ExternalLink, Clock, Eye } from 'lucide-react';
+import { ExternalLink, Clock } from 'lucide-react';
 import { hubApi } from '@/lib/api';
 import { useI18n } from '@/hooks/useI18n';
 import Header from './Header';
@@ -20,7 +20,6 @@ interface Hub {
   links: Link[];
   customName?: string;
   createdAt: string;
-  clickCount: number;
 }
 
 const HubDisplay = () => {
@@ -99,10 +98,10 @@ const HubDisplay = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background to-muted/20">
+    <div className="min-h-screen bg-gradient-to-br from-background to-muted/20 flex flex-col">
       <Header />
-      <div className="container mx-auto px-4 py-8 md:py-16">
-        <div className="max-w-2xl mx-auto">
+      <div className="container mx-auto px-6 md:px-4 py-8 md:py-16 flex-1 flex flex-col">
+        <div className="max-w-2xl mx-auto w-full flex-1 flex flex-col">
           {/* Hub Header */}
           <div className="text-center space-y-6 mb-12">
             <div className="space-y-2">
@@ -122,15 +121,11 @@ const HubDisplay = () => {
                 <Clock size={16} />
                 <span>{t.hub_created} {formatDate(hub.createdAt)}</span>
               </div>
-              <div className="flex items-center gap-2">
-                <Eye size={16} />
-                <span>{hub.clickCount} {t.hub_views}</span>
-              </div>
             </div>
           </div>
 
           {/* Links Grid */}
-          <div className="space-y-4">
+          <div className="space-y-4 flex-1">
             {hub.links
               .sort((a, b) => a.order - b.order)
               .map((link, index) => (
@@ -159,7 +154,7 @@ const HubDisplay = () => {
               ))}
           </div>
 
-          {/* Footer */}
+          {/* Footer - Sticky at bottom */}
           <div className="text-center mt-16 pt-8 border-t border-border">
             <p className="text-sm text-muted-foreground mb-4">
               {t.hub_create_own}
