@@ -1,0 +1,157 @@
+/* Font Imports */
+@import '@fontsource/inter/300.css';
+@import '@fontsource/inter/400.css';
+@import '@fontsource/inter/500.css';
+@import '@fontsource/inter/600.css';
+@import '@fontsource/inter/700.css';
+@import '@fontsource/lilita-one/400.css';
+@import '@fontsource/shrikhand/400.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* nanii.icu Design System - Modern URL Shortener */
+
+@layer base {
+  :root {
+    /* Core Brand Colors */
+    --background: 0 0% 100%;
+    --foreground: 0 0% 12%;
+    --nani-yellow: 51 100% 50%;
+    --nani-yellow-hover: 51 100% 45%;
+    --nani-yellow-light: 51 100% 95%;
+    
+    /* Semantic Colors */
+    --primary: 51 100% 50%; /* nani Yellow */
+    --primary-foreground: 0 0% 12%;
+    --primary-hover: 51 100% 45%;
+    
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 12%;
+    
+    --secondary: 0 0% 97%;
+    --secondary-foreground: 0 0% 25%;
+    
+    --muted: 0 0% 96%;
+    --muted-foreground: 0 0% 45%;
+    
+    --accent: 51 100% 95%;
+    --accent-foreground: 0 0% 12%;
+    
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+    
+    --success: 142 76% 36%;
+    --success-foreground: 0 0% 98%;
+    
+    --border: 0 0% 90%;
+    --input: 0 0% 100%;
+    --input-border: 0 0% 85%;
+    --ring: 51 100% 50%;
+    
+    --radius: 12px;
+    
+    /* Gradients */
+    --gradient-nani: linear-gradient(135deg, hsl(51 100% 50%), hsl(45 100% 55%));
+    --gradient-subtle: linear-gradient(180deg, hsl(0 0% 100%), hsl(0 0% 98%));
+    
+    /* Shadows */
+    --shadow-sm: 0 1px 2px 0 hsl(0 0% 0% / 0.05);
+    --shadow-md: 0 4px 6px -1px hsl(0 0% 0% / 0.1);
+    --shadow-lg: 0 10px 15px -3px hsl(0 0% 0% / 0.1);
+    --shadow-nani: 0 4px 14px 0 hsl(51 100% 50% / 0.2);
+    
+    /* Animations */
+    --transition-fast: all 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-normal: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-slow: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .dark {
+    --background: 0 0% 7%;
+    --foreground: 0 0% 95%;
+    
+    --primary: 51 100% 50%; /* nani Yellow stays the same */
+    --primary-foreground: 0 0% 7%;
+    --primary-hover: 51 100% 45%;
+    
+    --card: 0 0% 9%;
+    --card-foreground: 0 0% 95%;
+    
+    --secondary: 0 0% 12%;
+    --secondary-foreground: 0 0% 80%;
+    
+    --muted: 0 0% 15%;
+    --muted-foreground: 0 0% 65%;
+    
+    --accent: 51 100% 10%;
+    --accent-foreground: 51 100% 50%;
+    
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 98%;
+    
+    --success: 142 76% 36%;
+    --success-foreground: 0 0% 98%;
+    
+    --border: 0 0% 18%;
+    --input: 0 0% 10%;
+    --input-border: 0 0% 20%;
+    --ring: 51 100% 50%;
+    
+    /* Dark mode gradients */
+    --gradient-nani: linear-gradient(135deg, hsl(51 100% 50%), hsl(45 100% 55%));
+    --gradient-subtle: linear-gradient(180deg, hsl(0 0% 7%), hsl(0 0% 9%));
+    
+    /* Dark mode shadows */
+    --shadow-sm: 0 1px 2px 0 hsl(0 0% 0% / 0.3);
+    --shadow-md: 0 4px 6px -1px hsl(0 0% 0% / 0.4);
+    --shadow-lg: 0 10px 15px -3px hsl(0 0% 0% / 0.5);
+    --shadow-nani: 0 4px 14px 0 hsl(51 100% 50% / 0.3);
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans antialiased;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  }
+}
+
+/* Custom Utilities */
+@layer utilities {
+  .font-highlight {
+    font-family: 'Lilita One', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  }
+
+  .font-title {
+    font-family: 'Shrikhand', 'Lilita One', 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  }
+
+  .text-gradient-nani {
+    background: var(--gradient-nani);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .shadow-nani {
+    box-shadow: var(--shadow-nani);
+  }
+
+  .transition-fast {
+    transition: var(--transition-fast);
+  }
+
+  .transition-normal {
+    transition: var(--transition-normal);
+  }
+
+  .transition-slow {
+    transition: var(--transition-slow);
+  }
+}
