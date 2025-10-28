@@ -45,7 +45,7 @@ naniiicu/
 
 ### Frontend (naniiicu-app/)
 ```bash
-npm run dev           # Vite dev server on http://localhost:8080
+npm run dev           # Vite dev server on http://localhost:8090
 npm run build         # Production build
 npm run build:dev     # Development build
 npm run lint          # ESLint
@@ -54,7 +54,7 @@ npm run preview       # Preview production build
 
 ### Backend (backend/)
 ```bash
-npm run dev           # tsx watch mode - hot reload on http://localhost:3001
+npm run dev           # tsx watch mode - hot reload on http://localhost:3003
 npm run build         # Compile TypeScript to dist/
 npm run start         # Production: node dist/server.js
 npm run lint          # ESLint
@@ -109,7 +109,7 @@ docker-compose down -v
 
 **API Communication (`lib/api.ts`):**
 - Single source of truth for all backend calls
-- Base URL: `VITE_API_URL` env var or `http://localhost:3001`
+- Base URL: `VITE_API_URL` env var or `http://localhost:3003`
 - Exports: `urlApi`, `hubApi`, `healthApi`
 - Custom `ApiError` class with status codes
 
@@ -210,7 +210,7 @@ docker-compose down -v
 
 **Create Short URL:**
 ```bash
-curl -X POST http://localhost:3001/api/links \
+curl -X POST http://localhost:3003/api/links \
   -H "Content-Type: application/json" \
   -d '{"originalUrl": "https://example.com", "customName": "mylink"}'
 
@@ -230,7 +230,7 @@ curl -X POST http://localhost:3001/api/links \
 
 **Create Hub:**
 ```bash
-curl -X POST http://localhost:3001/api/hubs \
+curl -X POST http://localhost:3003/api/hubs \
   -H "Content-Type: application/json" \
   -d '{
     "title": "My Links",
@@ -246,12 +246,12 @@ curl -X POST http://localhost:3001/api/hubs \
 **Check Availability:**
 ```bash
 # URLs
-curl -X POST http://localhost:3001/api/links/check-availability \
+curl -X POST http://localhost:3003/api/links/check-availability \
   -H "Content-Type: application/json" \
   -d '{"customName": "mylink"}'
 
 # Hubs
-curl -X POST http://localhost:3001/api/hubs/check-availability \
+curl -X POST http://localhost:3003/api/hubs/check-availability \
   -H "Content-Type: application/json" \
   -d '{"customName": "mylinks"}'
 
@@ -268,29 +268,54 @@ curl -X POST http://localhost:3001/api/hubs/check-availability \
 
 ## Environment Variables
 
-### Backend (.env)
+### Docker Compose (.env in project root)
 ```bash
-PORT=3001
-NODE_ENV=production
-CORS_ORIGIN=http://localhost:8080,http://localhost:8082
-MONGO_URI=mongodb://admin:password@mongodb:27017/naniiicu?authSource=admin
-RATE_LIMIT_WINDOW_MS=900000        # 15 minutes
-RATE_LIMIT_MAX_REQUESTS=100
-BASE_URL=http://localhost:3001      # Used for generating short URLs
-```
-
-### Frontend
-- `VITE_API_URL`: Backend API URL (defaults to `http://localhost:3001`)
-
-### Docker Compose Variables
-```bash
+# MongoDB Configuration
 MONGO_INITDB_ROOT_USERNAME=admin
 MONGO_INITDB_ROOT_PASSWORD=password
 MONGO_INITDB_DATABASE=naniiicu
+
+# Backend Configuration
 NODE_ENV=production
-CORS_ORIGIN=http://localhost:8080
-BASE_URL=http://localhost:3001
+PORT=3001                           # Internal container port
+CORS_ORIGIN=http://localhost:8090,http://localhost:8082
+LOG_LEVEL=info
+
+# MongoDB Connection (individual variables - dynamically built)
+MONGO_HOST=mongodb
+MONGO_PORT=27017                    # Internal container port
+MONGO_AUTH_SOURCE=admin
+
+# Rate Limiting
+RATE_LIMIT_WINDOW_MS=900000        # 15 minutes
+RATE_LIMIT_MAX_REQUESTS=100
+
+# Frontend Configuration (build-time variable)
+VITE_API_URL=http://localhost:3003
 ```
+
+### Backend (backend/.env for local development)
+```bash
+PORT=3001
+NODE_ENV=development
+CORS_ORIGIN=http://localhost:8090
+LOG_LEVEL=debug
+
+# MongoDB Connection (local development)
+MONGO_HOST=localhost
+MONGO_PORT=27018                    # Host port (27017 internal)
+MONGO_USER=admin
+MONGO_PASSWORD=password
+MONGO_DATABASE=naniiicu
+MONGO_AUTH_SOURCE=admin
+
+# Alternative: Use connection string directly
+# MONGO_URI=mongodb://admin:password@localhost:27018/naniiicu?authSource=admin
+```
+
+### Frontend
+- `VITE_API_URL`: Backend API URL (defaults to `http://localhost:3003`)
+- Set via Docker Compose build args or create `.env` file in naniiicu-app/
 
 ## Key Implementation Details
 
@@ -379,9 +404,10 @@ docker-compose up --build -d
 ### Port Conflicts
 ```bash
 # Check what's using ports
-lsof -i :3001    # Backend
-lsof -i :8080    # Frontend
-lsof -i :27017   # MongoDB
+lsof -i :3003    # Backend (host port)
+lsof -i :8090    # Frontend (host port)
+lsof -i :27018   # MongoDB (host port)
+lsof -i :8091    # Mongo Express (host port)
 
 # Kill process
 kill -9 <PID>
@@ -396,8 +422,8 @@ kill -9 <PID>
 
 ### Production Checklist
 1. Set `NODE_ENV=production`
-2. Configure proper `BASE_URL` (your domain)
-3. Set secure `CORS_ORIGIN` (your domain)
+2. Set secure `CORS_ORIGIN` (your domain)
+3. Configure `VITE_API_URL` (your domain/API endpoint)
 4. Use strong MongoDB credentials
 5. Enable HTTPS (not included - use reverse proxy)
 6. Set up MongoDB backups
@@ -410,8 +436,8 @@ kill -9 <PID>
 docker-compose up --build -d
 
 # Check health
-curl http://localhost:3001/health
-curl http://localhost:8080/
+curl http://localhost:3003/health
+curl http://localhost:8090/
 
 # View logs
 docker-compose logs -f backend

@@ -31,9 +31,11 @@ cd naniiicu
 docker-compose up --build -d
 
 # Access the application
-# Frontend: http://localhost:8080
-# Backend API: http://localhost:3001
-# Health Check: http://localhost:3001/health
+# Frontend: http://localhost:8090
+# Backend API: http://localhost:3003
+# MongoDB: localhost:27018
+# Mongo Express: http://localhost:8091
+# Health Check: http://localhost:3003/health
 ```
 
 ### Development Setup
@@ -66,14 +68,14 @@ docker run -d --name mongodb -p 27017:27017 mongo:7.0
 
 ### Example: Create Short URL
 ```bash
-curl -X POST http://localhost:3001/api/links \
+curl -X POST http://localhost:3003/api/links \
   -H "Content-Type: application/json" \
   -d '{"originalUrl": "https://example.com", "customName": "mylink"}'
 ```
 
 ### Example: Create Link Hub
 ```bash
-curl -X POST http://localhost:3001/api/hubs \
+curl -X POST http://localhost:3003/api/hubs \
   -H "Content-Type: application/json" \
   -d '{
     "title": "My Links",
@@ -88,17 +90,34 @@ curl -X POST http://localhost:3001/api/hubs \
 
 ## Environment Variables
 
-### Backend (.env)
+Create a `.env` file in the project root for Docker Compose configuration:
+
 ```env
-PORT=3001
+# MongoDB Configuration
+MONGO_INITDB_ROOT_USERNAME=admin
+MONGO_INITDB_ROOT_PASSWORD=password
+MONGO_INITDB_DATABASE=naniiicu
+
+# Backend Configuration
 NODE_ENV=production
-CORS_ORIGIN=http://localhost:8080
-MONGO_URI=mongodb://admin:password@mongodb:27017/naniiicu?authSource=admin
-BASE_URL=http://localhost:3001
+PORT=3001
+CORS_ORIGIN=http://localhost:8090
+LOG_LEVEL=info
+
+# MongoDB Connection (used by backend)
+MONGO_HOST=mongodb
+MONGO_PORT=27017
+MONGO_AUTH_SOURCE=admin
+
+# Rate Limiting
+RATE_LIMIT_WINDOW_MS=900000
+RATE_LIMIT_MAX_REQUESTS=100
+
+# Frontend Configuration
+VITE_API_URL=http://localhost:3003
 ```
 
-### Frontend
-- `VITE_API_URL` - Backend API URL (default: `http://localhost:3001`)
+See `.env.example` for a complete list of available variables.
 
 ## Technology Stack
 
