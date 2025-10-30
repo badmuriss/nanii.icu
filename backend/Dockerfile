@@ -10,6 +10,8 @@ RUN npm run build
 
 FROM node:20-alpine AS runtime
 
+RUN apk add --no-cache curl
+
 RUN addgroup -g 1001 -S nodejs
 RUN adduser -S backend -u 1001
 
@@ -25,8 +27,5 @@ COPY --from=builder --chown=backend:nodejs /app/dist ./dist
 USER backend
 
 EXPOSE 3001
-
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-  CMD node -e "fetch('http://localhost:3001/health').then(r => r.status === 200 ? process.exit(0) : process.exit(1)).catch(() => process.exit(1))"
 
 CMD ["node", "dist/server.js"]

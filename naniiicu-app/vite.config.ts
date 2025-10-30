@@ -10,12 +10,12 @@ export default defineConfig(() => ({
     proxy: {
       // Proxy API requests
       '/api': {
-        target: 'http://localhost:3001',
+        target: 'http://localhost:3002',
         changeOrigin: true,
       },
       // Proxy shortened URLs (3+ chars, alphanumeric, hyphens, underscores)
       '^/[a-zA-Z0-9_-]{3,}$': {
-        target: 'http://localhost:3001',
+        target: 'http://localhost:3002',
         changeOrigin: true,
       },
     },
