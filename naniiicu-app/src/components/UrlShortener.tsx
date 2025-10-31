@@ -271,7 +271,7 @@ const UrlShortener = () => {
   };
 
   return (
-    <div className="w-full max-w-4xl mx-auto mt-16 pb-12 space-y-10">
+    <div className="max-w-4xl mx-auto px-16 mt-12 md:mt-16 pb-12 space-y-10">
       {/* Header */}
       <div className="text-center space-y-6">
         <h1 className="text-5xl md:text-6xl font-title text-foreground tracking-wide">
@@ -291,7 +291,7 @@ const UrlShortener = () => {
 
         {/* URL Mode */}
         <TabsContent value="url" className="space-y-6">
-          <div className="space-y-6">
+          <div className="space-y-3 md:space-y-6">
           <div className="relative">
             <Input
               type="text"
@@ -299,7 +299,7 @@ const UrlShortener = () => {
               value={originalUrl}
               onChange={(e) => setOriginalUrl(e.target.value)}
               onKeyDown={(e) => handleKeyPress(e, handleShorten)}
-              className="pl-12 h-16 text-lg border-2 border-border bg-background focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 rounded-2xl"
+              className="pl-12 h-16 md:text-lg border-2 border-border bg-background focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all duration-200 rounded-2xl"
             />
             <Link2 className="absolute left-4 top-1/2 transform -translate-y-1/2 text-muted-foreground" size={20} />
           </div>
