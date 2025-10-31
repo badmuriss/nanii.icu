@@ -26,6 +26,6 @@ COPY --from=builder --chown=backend:nodejs /app/dist ./dist
 
 USER backend
 
-EXPOSE 3001
+EXPOSE 3002
 
 CMD ["node", "dist/server.js"]

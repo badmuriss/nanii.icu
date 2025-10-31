@@ -31,7 +31,7 @@ cd naniiicu
 docker-compose up --build -d
 
 # Access the application
-# Frontend: http://localhost:8090
+# Frontend: http://localhost:8084
 # Backend API: http://localhost:3003
 # MongoDB: localhost:27018
 # Mongo Express: http://localhost:8091
@@ -100,8 +100,8 @@ MONGO_INITDB_DATABASE=naniiicu
 
 # Backend Configuration
 NODE_ENV=production
-PORT=3001
-CORS_ORIGIN=http://localhost:8090
+PORT=3002
+CORS_ORIGIN=http://localhost:8084
 LOG_LEVEL=info
 
 # MongoDB Connection (used by backend)

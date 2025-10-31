@@ -28,7 +28,7 @@ const buildMongoUri = (): string => {
 };
 
 export const config = {
-  port: parseInt(process.env.PORT || '3001', 10),
+  port: parseInt(process.env.PORT || '3002', 10),
   nodeEnv: process.env.NODE_ENV || 'development',
   corsOrigin: (process.env.CORS_ORIGIN || 'https://nanii.icu,http://localhost:8080,http://localhost:8082').split(',').map(origin => origin.trim()),
   mongoUri: buildMongoUri(),

@@ -45,7 +45,7 @@ naniiicu/
 
 ### Frontend (naniiicu-app/)
 ```bash
-npm run dev           # Vite dev server on http://localhost:8090
+npm run dev           # Vite dev server on http://localhost:8084
 npm run build         # Production build
 npm run build:dev     # Development build
 npm run lint          # ESLint
@@ -277,8 +277,8 @@ MONGO_INITDB_DATABASE=naniiicu
 
 # Backend Configuration
 NODE_ENV=production
-PORT=3001                           # Internal container port
-CORS_ORIGIN=http://localhost:8090,http://localhost:8082
+PORT=3002                           # Internal container port
+CORS_ORIGIN=http://localhost:8084,http://localhost:8082
 LOG_LEVEL=info
 
 # MongoDB Connection (individual variables - dynamically built)
@@ -296,9 +296,9 @@ VITE_API_URL=http://localhost:3003
 
 ### Backend (backend/.env for local development)
 ```bash
-PORT=3001
+PORT=3002
 NODE_ENV=development
-CORS_ORIGIN=http://localhost:8090
+CORS_ORIGIN=http://localhost:8084
 LOG_LEVEL=debug
 
 # MongoDB Connection (local development)
@@ -405,7 +405,7 @@ docker-compose up --build -d
 ```bash
 # Check what's using ports
 lsof -i :3003    # Backend (host port)
-lsof -i :8090    # Frontend (host port)
+lsof -i :8084    # Frontend (host port)
 lsof -i :27018   # MongoDB (host port)
 lsof -i :8091    # Mongo Express (host port)
 
@@ -437,7 +437,7 @@ docker-compose up --build -d
 
 # Check health
 curl http://localhost:3003/health
-curl http://localhost:8090/
+curl http://localhost:8084/
 
 # View logs
 docker-compose logs -f backend
