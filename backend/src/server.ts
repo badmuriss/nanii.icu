@@ -13,6 +13,9 @@ import { connectDatabase } from './database/connection.js';
 
 const app = express();
 
+// Trust proxy - needed for rate limiting and getting real client IP behind nginx/traefik
+app.set('trust proxy', true);
+
 app.use(helmet({
   contentSecurityPolicy: false,
   crossOriginEmbedderPolicy: false,
