@@ -9,6 +9,9 @@ services:
       MONGO_INITDB_DATABASE: ${MONGO_INITDB_DATABASE:-naniiicu}
     volumes:
       - mongodb-data:/data/db
+    networks:
+      - naniiicu-network
+
   backend:
     build:
       context: ./backend
@@ -32,6 +35,9 @@ services:
       MONGO_AUTH_SOURCE: admin
       RATE_LIMIT_WINDOW_MS: ${RATE_LIMIT_WINDOW_MS:-900000}
       RATE_LIMIT_MAX_REQUESTS: ${RATE_LIMIT_MAX_REQUESTS:-100}
+    networks:
+      - naniiicu-network
+
   frontend:
     build:
       context: ./naniiicu-app
@@ -44,7 +50,13 @@ services:
       - backend
     ports:
       - "8084:80"
+    networks:
+      - naniiicu-network
 
 volumes:
   mongodb-data:
     driver: local
+
+networks:
+  naniiicu-network:
+    driver: bridge
